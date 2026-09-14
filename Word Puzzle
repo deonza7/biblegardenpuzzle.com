@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bible Garden Puzzle</title>
+
+    <style>
+        /* === BOTANICAL SAGE GREEN STYLING === */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            background: linear-gradient(135deg, #e8efe9 0%, #c8d6ca 100%);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(44, 62, 41, 0.15);
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+            border: 1px solid #b2c4b5;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .nectar-display,
+        .tier-display {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2e4a23;
+            background: #f0f5f1;
+            padding: 8px 12px;
+            border-radius: 20px;
+            flex: 1;
+            text-align: center;
+            border: 1px solid #e0e8e1;
+        }
+
+        .tier-display {
+            background: #eef7f9;
+            color: #1e3d59;
+            border-color: #d2e5eb;
+        }
+
+        h1 {
+            color: #2e4a23;
+            margin: 10px 0 2px;
+            font-size: 26px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: #556b2f;
+            margin: 0 0 20px;
+            font-size: 14px;
+        }
+
+        .puzzle-box {
+            background: #f4f7f4;
+            padding: 25px 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e8e1;
+        }
+
+        .scrambled-word {
+            font-size: clamp(20px, 6vw, 32px);
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #3b5334;
+            margin: 0 0 12px;
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
+
+        .hint {
+            font-size: 15px;
+            color: #616e62;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .hint span {
+            font-weight: bold;
+            color: #2e4a23;
+        }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        input[type="text"] {
+            padding: 14px;
+            font-size: 18px;
+            border: 2px solid #c8d6ca;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: inherit;
+            background-color: #fafdfa;
+        }
+
+        input[type="text"]:focus {
+            border-color: #556b2f;
+            background-color: #ffffff;
+        }
+
+        button.action-btn {
+            padding: 14px;
+            font-size: 16px;
+            color: white;
+            background: #465c32;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
+            font-family: sans-serif;
+        }
+
+        button.action-btn:hover {
+            background: #354625;
+        }
+
+        button.action-btn:active {
+            transform: scale(0.98);
+        }
+
+        button.action-btn:disabled {
+            background: #a7b3a5;
+            cursor: not-allowed;
+        }
+
+        .secondary-btn {
+            background: #768f5c !important;
+        }
+
+        .secondary-btn:hover {
+            background: #5d7347 !important;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 16px;
+            min-height: 24px;
+        }
+
+        .correct {
+            color: #3b7a24;
+        }
+
+        .incorrect {
+            color: #b23b3b;
+        }
+
+        @media (max-width: 420px) {
+            .game-container {
+                padding: 20px 15px;
+            }
+
+            .stats-grid {
+                flex-direction: column;
+            }
+
+            .scrambled-word {
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="game-container">
+        <div class="stats-grid">
+            <div class="nectar-display">
+                🌸 <span id="nectarPoints">0</span> Nectar Points
+            </div>
+
+            <div class="tier-display">
+                🌱 Tier: <span id="gardenTier">Mustard Seed</span>
+            </div>
+        </div>
+
+        <h1>The Bible Garden Puzzle</h1>
+        <p class="subtitle">Vines &amp; Verses</p>
+
+        <section class="puzzle-box">
+            <p class="scrambled-word" id="scrambledWord">_____</p>
+
+            <p class="hint">
+                Hint: <span id="wordHint">...</span>
+            </p>
+        </section>
+
+        <div class="input-area">
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Type your guess here"
+                autocomplete="off"
+                aria-label="Enter your word guess"
+            >
+
+            <button id="checkBtn" class="action-btn">
+                Check Word
+            </button>
+
+            <button id="refreshBtn" class="action-btn secondary-btn">
+                Next Seed
+            </button>
+        </div>
+
+        <p class="message" id="message" aria-live="polite"></p>
+    </main>
+
+    <script>
+        // === BIBLE WORDS DICTIONARY ===
+
+        const bibleWordsBank = [
+            { word: "myrrh", hint: "A valuable aromatic resin brought to Jesus by the Wise Men" },
+            { word: "honey", hint: "A sweet food associated with John the Baptist" },
+            { word: "frankincense", hint: "A costly incense brought by the Wise Men" },
+            { word: "cinnamon", hint: "A fragrant spice used in the sacred anointing oil" },
+            { word: "tabernacle", hint: "The portable dwelling place of God's presence" },
+            { word: "candle", hint: "A light used to illuminate a room or house" },
+            { word: "oil", hint: "Used in lamps, anointing, and healing" },
+            { word: "lamp", hint: "Thy word is a _____ unto my feet" },
+            { word: "shepherd", hint: "The Lord is my _____; I shall not want" },
+            { word: "olive", hint: "A tree whose fruit produces valuable oil" },
+            { word: "vine", hint: "Jesus said, I am the true _____" },
+            { word: "grape", hint: "Fruit that grows in clusters on a vine" },
+            { word: "wheat", hint: "A crop often used as a picture of harvest" },
+            { word: "barley", hint: "A grain used in bread and in the feeding miracle" },
+            { word: "fig", hint: "A fruit tree Jesus used in a teaching illustration" },
+            { word: "date", hint: "A sweet fruit commonly associated with palm trees" },
+            { word: "palm", hint: "Branches were placed before Jesus in Jerusalem" },
+            { word: "cedar", hint: "A strong tree associated with Lebanon" },
+            { word: "hyssop", hint: "A plant used in purification ceremonies" },
+            { word: "aloe", hint: "An aromatic substance used in burial preparation" },
+            { word: "cumin", hint: "A spice mentioned when Jesus taught about tithing" },
+            { word: "mint", hint: "An herb mentioned with dill and cumin" },
+            { word: "dill", hint: "An herb mentioned in Jesus' teaching about tithing" },
+            { word: "mustard", hint: "A tiny seed used as an example of faith" },
+            { word: "lily", hint: "Jesus said to consider the lilies of the field" },
+            { word: "almond", hint: "A flowering tree connected with Aaron's staff" },
+            { word: "pomegranate", hint: "A fruit represented on the priestly garments" },
+            { word: "thistle", hint: "A prickly plant associated with the ground's curse" },
+            { word: "thorn", hint: "A sharp growth mentioned in Jesus' crown" },
+            { word: "rose", hint: "A flower often associated with biblical garden imagery" },
+            { word: "garden", hint: "A cultivated place where plants grow" },
+            { word: "seed", hint: "Jesus used this to explain growth and God's kingdom" },
+            { word: "root", hint: "The part of a plant that grows beneath the soil" },
+            { word: "branch", hint: "A smaller part growing from a tree or vine" },
+            { word: "blossom", hint: "A flower that appears on a growing plant" },
+            { word: "harvest", hint: "The gathering of mature crops" },
+            { word: "apple", hint: "A fruit mentioned in poetic biblical imagery" },
+            { word: "mandrake", hint: "A plant mentioned in the story of Rachel and Leah" },
+            { word: "leek", hint: "A vegetable remembered by the Israelites in Egypt" },
+            { word: "onion", hint: "A food the Israelites remembered from Egypt" },
+            { word: "garlic", hint: "A food remembered by the Israelites in the wilderness" },
+            { word: "lentil", hint: "A red stew made by Jacob" },
+            { word: "gourd", hint: "A plant connected with Jonah's shelter" },
+            { word: "cucumber", hint: "A food the Israelites remembered from Egypt" },
+            { word: "sycamore", hint: "A tree climbed by Zacchaeus" },
+            { word: "mulberry", hint: "A tree mentioned in one of David's battles" },
+            { word: "oak", hint: "A large tree mentioned in several biblical stories" },
+            { word: "acacia", hint: "Wood used in constructing sacred furnishings" },
+            { word: "willow", hint: "A tree mentioned beside Babylon's rivers" },
+            { word: "reed", hint: "A tall plant often found near water" },
+            { word: "bulrush", hint: "The kind of plant associated with baby Moses' basket" },
+            { word: "grass", hint: "Jesus used this plant when teaching about God's care" },
+            { word: "hay", hint: "Dry grass used as animal food" },
+            { word: "chaff", hint: "The dry husks separated from grain" },
+            { word: "dove", hint: "A bird associated with Noah and the Holy Spirit" },
+            { word: "raven", hint: "Birds that brought food to Elijah" },
+            { word: "sparrow", hint: "A small bird used by Jesus to teach about God's care" },
+            { word: "eagle", hint: "A bird used as a picture of strength and renewal" },
+            { word: "lion", hint: "A powerful animal mentioned throughout Scripture" },
+            { word: "lamb", hint: "An animal used in sacrifices and representing Jesus" },
+            { word: "ram", hint: "An animal provided for Abraham instead of Isaac" },
+            { word: "goat", hint: "An animal used in the Day of Atonement ceremony" },
+            { word: "ox", hint: "A strong working animal used for plowing" },
+            { word: "donkey", hint: "The animal Jesus rode into Jerusalem" },
+            { word: "camel", hint: "A large animal associated with travelers and merchants" },
+            { word: "fish", hint: "Jesus called fishermen and fed a multitude with these" },
+            { word: "locust", hint: "An insect eaten by John the Baptist" },
+            { word: "serpent", hint: "A creature connected with the garden of Eden" },
+            { word: "ark", hint: "A large vessel built by Noah" },
+            { word: "altar", hint: "A raised place used for worship and sacrifice" },
+            { word: "temple", hint: "A holy place in Jerusalem" },
+            { word: "scroll", hint: "An ancient rolled document used for Scripture" },
+            { word: "tablet", hint: "Moses received the commandments on stone tablets" },
+            { word: "trumpet", hint: "An instrument used in worship and battle" },
+            { word: "harp", hint: "An instrument David played" },
+            { word: "lyre", hint: "A stringed instrument used in ancient worship" },
+            { word: "crown", hint: "A symbol worn by kings" },
+            { word: "robe", hint: "A long garment worn in biblical times" },
+            { word: "sandals", hint: "Footwear commonly worn in Bible times" },
+            { word: "basket", hint: "A container used to carry bread or food" },
+            { word: "pitcher", hint: "A container used for carrying water" },
+            { word: "jar", hint: "A container used to store oil or other goods" },
+            { word: "net", hint: "Fishermen left these to follow Jesus" },
+            { word: "staff", hint: "Moses carried this while leading Israel" },
+            { word: "sling", hint: "David used this against Goliath" },
+            { word: "sword", hint: "A weapon carried by soldiers and guards" },
+            { word: "shield", hint: "A piece of armor used for protection" },
+            { word: "helmet", hint: "Armor worn to protect a soldier's head" },
+            { word: "Bethlehem", hint: "The town where Jesus was born" },
+            { word: "Nazareth", hint: "The town where Jesus grew up" },
+            { word: "Jerusalem", hint: "The holy city where Jesus taught and was crucified" },
+            { word: "Jericho", hint: "The city whose walls fell after Israel marched around it" },
+            { word: "Galilee", hint: "The region where Jesus carried out much of His ministry" },
+            { word: "Jordan", hint: "The river where Jesus was baptized" },
+            { word: "Sinai", hint: "The mountain where Moses received the commandments" },
+            { word: "Eden", hint: "The garden where Adam and Eve lived" },
+            { word: "manna", hint: "Bread-like food provided for Israel in the wilderness" },
+            { word: "Sabbath", hint: "A day of rest and worship" }
+        ];
+
+        // === GAME VARIABLES ===
+
+        let currentSecretWord = "";
+        let points = 0;
+
+        // === DOM ELEMENTS ===
+
+        const scrambledWordEl = document.getElementById("scrambledWord");
+        const wordHintEl = document.getElementById("wordHint");
+        const userInputEl = document.getElementById("userInput");
+        const checkBtn = document.getElementById("checkBtn");
+        const refreshBtn = document.getElementById("refreshBtn");
+        const messageEl = document.getElementById("message");
+        const nectarPointsEl = document.getElementById("nectarPoints");
+        const gardenTierEl = document.getElementById("gardenTier");
+
+        // === SCRAMBLE WORD ===
+
+        function scrambleWord(word) {
+            const letters = word.split("");
+            let scrambled;
+
+            do {
+                for (let i = letters.length - 1; i > 0; i--) {
+                    const randomIndex = Math.floor(Math.random() * (i + 1));
+
+                    [
+                        letters[i],
+                        letters[randomIndex]
+                    ] = [
+                        letters[randomIndex],
+                        letters[i]
+                    ];
+                }
+
+                scrambled = letters.join("");
+            } while (scrambled.toLowerCase() === word.toLowerCase() && word.length > 1);
+
+            return scrambled;
+        }
+
+        // === UPDATE PLAYER TIER ===
+
+        function updateTierBadge() {
+            if (points >= 100) {
+                gardenTierEl.textContent = "👑 Faithful";
+            } else if (points >= 60) {
+                gardenTierEl.textContent = "🌳 Sacred Oasis";
+            } else if (points >= 30) {
+                gardenTierEl.textContent = "🌿 Trailing Vines";
+            } else {
+                gardenTierEl.textContent = "🌱 Mustard Seed";
+            }
+        }
+
+        // === START A NEW ROUND ===
+
+        function initGame() {
+            messageEl.textContent = "";
+            messageEl.className = "message";
+
+            userInputEl.value = "";
+            userInputEl.disabled = false;
+            checkBtn.disabled = false;
+
+            const randomIndex = Math.floor(
+                Math.random() * bibleWordsBank.length
+            );
+
+            const selectedWord = bibleWordsBank[randomIndex];
+
+            currentSecretWord = selectedWord.word.toLowerCase();
+
+            scrambledWordEl.textContent =
+                scrambleWord(selectedWord.word);
+
+            wordHintEl.textContent = selectedWord.hint;
+
+            userInputEl.focus();
+        }
+
+        // === CHECK THE PLAYER'S ANSWER ===
+
+        function checkAnswer() {
+            const userGuess = userInputEl.value.trim().toLowerCase();
+
+            if (!userGuess) {
+                messageEl.className = "message incorrect";
+                messageEl.textContent = "Please enter a guess first.";
+                userInputEl.focus();
+                return;
+            }
+
+            if (userGuess === currentSecretWord) {
+                messageEl.className = "message correct";
+                messageEl.textContent =
+                    "🌸 Correct! You've nurtured the seed.";
+
+                points += 10;
+                nectarPointsEl.textContent = points;
+
+                updateTierBadge();
+
+                userInputEl.disabled = true;
+                checkBtn.disabled = true;
+            } else {
+                messageEl.className = "message incorrect";
+                messageEl.textContent =
+                    "❌ Try again! That's not quite right.";
+
+                userInputEl.select();
+            }
+        }
+
+        // === EVENT LISTENERS ===
+
+        checkBtn.addEventListener("click", checkAnswer);
+
+        refreshBtn.addEventListener("click", initGame);
+
+        userInputEl.addEventListener("keydown", function(event) {
+            if (event.key === "Enter" && !checkBtn.disabled) {
+                checkAnswer();
+            }
+        });
+
+        // === START THE GAME ===
+
+        initGame();
+    </script>
+</body>
+</html>
