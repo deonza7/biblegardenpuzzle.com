@@ -4,106 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google AdSense -->
-    <script async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9973236774766110"
-        crossorigin="anonymous"></script>
-
     <title>The Bible Garden Puzzle</title>
 
+    <!-- Google AdSense account script -->
+    <script async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9973236774766110"
+        crossorigin="anonymous">
+    </script>
+
     <style>
-        /* === BOTANICAL SAGE GREEN STYLING === */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             background: linear-gradient(135deg, #e8efe9 0%, #c8d6ca 100%);
             margin: 0;
             padding: 10px;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 95vh;
         }
 
         .game-container {
             background: #ffffff;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(44, 62, 41, 0.15);
             width: 100%;
-            max-width: 420px;
+            max-width: 460px;
+            padding: 28px;
+            border-radius: 16px;
             text-align: center;
-            box-sizing: border-box;
             border: 1px solid #b2c4b5;
+            box-shadow: 0 10px 30px rgba(44, 62, 41, 0.15);
         }
 
         .stats-grid {
             display: flex;
-            justify-content: space-between;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         .nectar-display,
         .tier-display {
-            font-size: 14px;
+            flex: 1;
+            padding: 9px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: bold;
+            text-align: center;
+        }
+
+        .nectar-display {
             color: #2e4a23;
             background: #f0f5f1;
-            padding: 8px 14px;
-            border-radius: 20px;
-            flex: 1;
-            text-align: center;
             border: 1px solid #e0e8e1;
         }
 
         .tier-display {
-            background: #eef7f9;
             color: #1e3d59;
-            border-color: #d2e5eb;
+            background: #eef7f9;
+            border: 1px solid #d2e5eb;
         }
 
         h1 {
             color: #2e4a23;
-            margin: 10px 0 2px 0;
             font-size: 26px;
             font-weight: normal;
+            margin: 10px 0 2px;
         }
 
         .subtitle {
-            font-style: italic;
             color: #556b2f;
-            margin: 0 0 20px 0;
             font-size: 14px;
+            font-style: italic;
+            margin: 0 0 20px;
         }
 
         .puzzle-box {
             background: #f4f7f4;
-            padding: 25px;
-            border-radius: 12px;
+            padding: 25px 18px;
             margin-bottom: 20px;
+            border-radius: 12px;
             border: 1px solid #e0e8e1;
         }
 
         .scrambled-word {
-            font-size: 24px;
+            color: #3b5334;
+            font-size: 25px;
             font-weight: bold;
             letter-spacing: 4px;
-            color: #3b5334;
-            margin: 0 0 12px 0;
+            line-height: 1.4;
+            margin: 0 0 12px;
+            overflow-wrap: anywhere;
             text-transform: uppercase;
-            word-wrap: break-word;
         }
 
         .hint {
-            font-size: 15px;
             color: #616e62;
-            margin: 0;
+            font-size: 15px;
             line-height: 1.4;
+            margin: 0;
         }
 
         .hint span {
-            font-weight: bold;
             color: #2e4a23;
+            font-weight: bold;
         }
 
         .input-area {
@@ -113,36 +119,40 @@
         }
 
         input[type="text"] {
+            width: 100%;
             padding: 14px;
-            font-size: 18px;
             border: 2px solid #c8d6ca;
             border-radius: 8px;
+            background: #fafdfa;
+            font-family: inherit;
+            font-size: 18px;
             outline: none;
             text-align: center;
             text-transform: uppercase;
-            font-family: inherit;
-            background-color: #fafdfa;
         }
 
         input[type="text"]:focus {
             border-color: #556b2f;
-            background-color: #ffffff;
+            background: #ffffff;
         }
 
-        button.action-btn {
+        button {
+            width: 100%;
             padding: 14px;
-            font-size: 16px;
-            color: white;
-            background: #465c32;
             border: none;
             border-radius: 8px;
+            color: white;
             cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
             font-weight: bold;
-            transition: background 0.2s;
-            font-family: sans-serif;
         }
 
-        button.action-btn:hover {
+        .action-btn {
+            background: #465c32;
+        }
+
+        .action-btn:hover {
             background: #354625;
         }
 
@@ -154,11 +164,16 @@
             background: #5d7347;
         }
 
+        button:disabled {
+            background: #aab5a5;
+            cursor: not-allowed;
+        }
+
         .message {
-            margin-top: 15px;
-            font-weight: bold;
-            font-size: 16px;
             min-height: 24px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .correct {
@@ -168,11 +183,39 @@
         .incorrect {
             color: #b23b3b;
         }
+
+        /*
+         * Optional advertisement area.
+         *
+         * After creating an AdSense ad unit, place its code here.
+         */
+
+        .ad-container {
+            min-height: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 400px) {
+            .game-container {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                flex-direction: column;
+            }
+
+            .scrambled-word {
+                font-size: 21px;
+                letter-spacing: 3px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="game-container">
+
+    <main class="game-container">
+
         <div class="stats-grid">
             <div class="nectar-display">
                 🌸 <span id="nectarPoints">0</span> Nectar Points
@@ -184,10 +227,11 @@
         </div>
 
         <h1>The Bible Garden Puzzle</h1>
-        <p class="subtitle">Vines & Verses</p>
+        <p class="subtitle">Vines &amp; Verses</p>
 
         <div class="puzzle-box">
             <p class="scrambled-word" id="scrambledWord">_____</p>
+
             <p class="hint">
                 Hint: <span id="wordHint">...</span>
             </p>
@@ -199,91 +243,266 @@
                 id="userInput"
                 placeholder="Type your guess here"
                 autocomplete="off"
+                spellcheck="false"
             >
 
             <button id="checkBtn" class="action-btn">
                 Check Word
             </button>
 
-            <button id="refreshBtn" class="action-btn secondary-btn">
+            <button id="refreshBtn" class="secondary-btn">
                 Next Seed
             </button>
         </div>
 
+        <!-- Optional AdSense ad unit can be placed here -->
+
+        <div class="ad-container">
+            <!--
+            Paste your AdSense ad-unit code here.
+
+            Example:
+
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-9973236774766110"
+                 data-ad-slot="YOUR_AD_SLOT_NUMBER"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true">
+            </ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            -->
+        </div>
+
         <p class="message" id="message"></p>
-    </div>
+    </main>
 
     <script>
-        // BIBLE WORDS DICTIONARY
-        const bibleWordsBank = [
-            {
-                word: "myrrh",
-                hint: "A valuable, aromatic resin offered to baby Jesus"
-            },
-            {
-                word: "honey",
-                hint: "Sweet substance found in the rock; part of John the Baptist's diet"
-            },
-            {
-                word: "frankincense",
-                hint: "A costly incense burned in priestly duties and given by the Wise Men"
-            },
-            {
-                word: "cinnamon",
-                hint: "A fragrant spice used in the sacred anointing oil"
-            },
-            {
-                word: "tabernacle",
-                hint: "The portable earthly dwelling place of God's presence"
-            },
-            {
-                word: "candle",
-                hint: "Used to give light to all who are in the house"
-            },
-            {
-                word: "oil",
-                hint: "Kept in jars by the wise virgins to keep their lamps burning"
-            },
-            {
-                word: "lamp",
-                hint: "Thy word is a _____ unto my feet"
-            },
-            {
-                word: "shepherd",
-                hint: "The Lord is my _____; I shall not want"
-            }
+        /*
+         * 100 BIBLE WORDS
+         *
+         * Each item contains:
+         * [word, hint]
+         */
+
+        const bibleWords = [
+            ["myrrh", "A valuable aromatic resin offered to baby Jesus"],
+            ["honey", "A sweet substance found in the rock"],
+            ["frankincense", "A costly incense given by the Wise Men"],
+            ["cinnamon", "A fragrant spice used in sacred anointing oil"],
+            ["tabernacle", "The portable dwelling place of God's presence"],
+            ["candle", "Used to give light to everyone in the house"],
+            ["oil", "Kept in jars by the wise virgins"],
+            ["lamp", "Thy word is a _____ unto my feet"],
+            ["shepherd", "The Lord is my _____; I shall not want"],
+            ["faith", "The substance of things hoped for"],
+            ["grace", "God's undeserved favor"],
+            ["mercy", "Compassion and forgiveness shown to others"],
+            ["prayer", "Communication with God"],
+            ["wisdom", "The ability to make godly decisions"],
+            ["promise", "A declaration that something will happen"],
+            ["salvation", "Deliverance from sin and its consequences"],
+            ["peace", "A state of calm and quietness"],
+            ["joy", "A deep feeling of gladness"],
+            ["truth", "That which is faithful and genuine"],
+            ["light", "Jesus said, I am the _____ of the world"],
+            ["vine", "Jesus said, I am the true _____"],
+            ["bread", "Jesus called Himself the Bread of Life"],
+            ["fish", "Jesus used five loaves and two of these"],
+            ["dove", "A symbol of the Holy Spirit"],
+            ["ark", "The vessel Noah built before the flood"],
+            ["rainbow", "A sign of God's covenant with Noah"],
+            ["garden", "A beautiful place where God placed Adam and Eve"],
+            ["eden", "The garden where Adam and Eve lived"],
+            ["serpent", "The creature that tempted Eve"],
+            ["angel", "A heavenly messenger of God"],
+            ["cherubim", "Heavenly beings associated with God's presence"],
+            ["prophet", "A person who speaks a message from God"],
+            ["disciple", "A follower or student of Jesus"],
+            ["apostle", "One sent out to share the Gospel"],
+            ["parable", "A story used to teach a spiritual lesson"],
+            ["miracle", "A wonderful act showing God's power"],
+            ["cross", "The instrument on which Jesus was crucified"],
+            ["resurrection", "Jesus rising from the dead"],
+            ["gospel", "The good news about Jesus Christ"],
+            ["kingdom", "The realm over which God reigns"],
+            ["heaven", "The dwelling place of God"],
+            ["glory", "The greatness and magnificence of God"],
+            ["worship", "Showing honor and devotion to God"],
+            ["praise", "Expressing gratitude and admiration to God"],
+            ["blessing", "A gift or favor from God"],
+            ["covenant", "A solemn agreement or promise"],
+            ["commandment", "A rule or instruction given by God"],
+            ["righteousness", "Living in a way that is right before God"],
+            ["holiness", "Being set apart for God"],
+            ["obedience", "Following God's commands"],
+            ["humility", "Not thinking of yourself as better than others"],
+            ["patience", "Waiting calmly and trusting God"],
+            ["kindness", "Showing care and goodness toward others"],
+            ["goodness", "Moral excellence and virtue"],
+            ["faithfulness", "Being loyal and trustworthy"],
+            ["selfcontrol", "The ability to control your thoughts and actions"],
+            ["brother", "A male sibling or fellow believer"],
+            ["sister", "A female sibling or fellow believer"],
+            ["neighbor", "Someone who lives near you"],
+            ["widow", "A woman whose husband has died"],
+            ["orphan", "A child whose parents have died"],
+            ["servant", "A person who serves others"],
+            ["steward", "A person entrusted with caring for something"],
+            ["king", "A male ruler"],
+            ["queen", "A female ruler"],
+            ["priest", "A person who served in worship of God"],
+            ["temple", "A place dedicated to worshiping God"],
+            ["altar", "A place where offerings were made to God"],
+            ["sacrifice", "An offering made to God"],
+            ["offering", "A gift presented to God"],
+            ["scroll", "An ancient writing made from rolled material"],
+            ["scripture", "The written Word of God"],
+            ["verse", "A numbered section of a Bible chapter"],
+            ["chapter", "A major division of a Bible book"],
+            ["book", "A written work within the Bible"],
+            ["wisemen", "Visitors who came to honor baby Jesus"],
+            ["bethlehem", "The town where Jesus was born"],
+            ["nazareth", "The town where Jesus grew up"],
+            ["galilee", "The region where Jesus conducted His ministry"],
+            ["jerusalem", "The city where Jesus was crucified"],
+            ["jordan", "The river where Jesus was baptized"],
+            ["egypt", "The country where Jesus was taken as a child"],
+            ["moses", "The leader who guided Israel out of Egypt"],
+            ["noah", "The man who built the ark"],
+            ["abraham", "The father of many nations"],
+            ["sarah", "Abraham's wife and Isaac's mother"],
+            ["isaac", "The son God promised to Abraham and Sarah"],
+            ["jacob", "The father of the twelve tribes of Israel"],
+            ["joseph", "Jacob's son who became a ruler in Egypt"],
+            ["david", "The shepherd boy who became king"],
+            ["solomon", "The king known for great wisdom"],
+            ["esther", "A queen who helped save her people"],
+            ["ruth", "A faithful woman who stayed with Naomi"],
+            ["samuel", "A prophet who served God from childhood"],
+            ["elijah", "A prophet who challenged the prophets of Baal"],
+            ["daniel", "A servant of God placed in a lions' den"],
+            ["jonah", "A prophet swallowed by a great fish"],
+            ["isaiah", "A prophet who spoke about the coming Messiah"],
+            ["jeremiah", "A prophet sometimes called the weeping prophet"],
+            ["peter", "A disciple who once walked on water"],
+            ["john", "The disciple known as the beloved disciple"],
+            ["james", "A disciple and brother of John"],
+            ["matthew", "A disciple who had been a tax collector"],
+            ["martha", "The sister of Mary and Lazarus"],
+            ["lazarus", "The man Jesus raised from the dead"],
+            ["mary", "The mother of Jesus"],
+            ["thomas", "The disciple who wanted proof of the resurrection"],
+            ["paul", "An apostle who wrote many New Testament letters"],
+            ["timothy", "A young leader mentored by Paul"],
+            ["christ", "A title meaning Anointed One"],
+            ["messiah", "The promised Savior"]
         ];
+
+        /*
+         * Convert the word list into objects used by the game.
+         */
+        const bibleWordsBank = bibleWords.map(function(item) {
+            return {
+                word: item[0],
+                hint: item[1]
+            };
+        });
 
         let currentSecretWord = "";
         let points = 0;
+        let unusedWords = [];
+        let lastWord = "";
 
-        // DOM ELEMENT ACCESS
-        const scrambledWordEl = document.getElementById("scrambledWord");
-        const wordHintEl = document.getElementById("wordHint");
-        const userInputEl = document.getElementById("userInput");
-        const checkBtn = document.getElementById("checkBtn");
-        const refreshBtn = document.getElementById("refreshBtn");
-        const messageEl = document.getElementById("message");
-        const nectarPointsEl = document.getElementById("nectarPoints");
-        const gardenTierEl = document.getElementById("gardenTier");
+        const scrambledWordEl =
+            document.getElementById("scrambledWord");
 
-        // SCRAMBLE LOGIC
-        function scrambleWord(word) {
-            let letters = word.split("");
+        const wordHintEl =
+            document.getElementById("wordHint");
 
-            for (let i = letters.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                [letters[i], letters[j]] = [letters[j], letters[i]];
+        const userInputEl =
+            document.getElementById("userInput");
+
+        const checkBtn =
+            document.getElementById("checkBtn");
+
+        const refreshBtn =
+            document.getElementById("refreshBtn");
+
+        const messageEl =
+            document.getElementById("message");
+
+        const nectarPointsEl =
+            document.getElementById("nectarPoints");
+
+        const gardenTierEl =
+            document.getElementById("gardenTier");
+
+        // Shuffle an array using the Fisher-Yates method
+        function shuffle(array) {
+            const shuffled = [...array];
+
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+
+                [shuffled[i], shuffled[j]] =
+                    [shuffled[j], shuffled[i]];
             }
 
-            if (letters.join("") === word) {
-                return scrambleWord(word);
-            }
-
-            return letters.join("");
+            return shuffled;
         }
 
-        // TIER EVALUATION
+        // Scramble a word without leaving it unchanged
+        function scrambleWord(word) {
+            if (word.length < 2) {
+                return word;
+            }
+
+            let scrambled;
+
+            do {
+                scrambled = shuffle(word.split("")).join("");
+            } while (scrambled === word);
+
+            return scrambled;
+        }
+
+        /*
+         * Select the next unused word.
+         * A new shuffled round begins only after all words are used.
+         */
+        function getNextWord() {
+            if (unusedWords.length === 0) {
+                unusedWords = shuffle(bibleWordsBank);
+
+                /*
+                 * Prevent the first word of a new round from being
+                 * the same as the final word of the previous round.
+                 */
+                if (
+                    unusedWords.length > 1 &&
+                    unusedWords[unusedWords.length - 1].word === lastWord
+                ) {
+                    [
+                        unusedWords[0],
+                        unusedWords[unusedWords.length - 1]
+                    ] = [
+                        unusedWords[unusedWords.length - 1],
+                        unusedWords[0]
+                    ];
+                }
+            }
+
+            const nextWord = unusedWords.pop();
+
+            lastWord = nextWord.word;
+
+            return nextWord;
+        }
+
         function updateTierBadge() {
             if (points >= 100) {
                 gardenTierEl.innerText = "👑 Faithful";
@@ -296,27 +515,29 @@
             }
         }
 
-        // INITIALIZE ROUND
         function initGame() {
             messageEl.innerText = "";
             messageEl.className = "message";
+
             userInputEl.value = "";
             userInputEl.disabled = false;
             checkBtn.disabled = false;
 
-            const randomObj =
-                bibleWordsBank[
-                    Math.floor(Math.random() * bibleWordsBank.length)
-                ];
+            const nextWord = getNextWord();
 
-            currentSecretWord = randomObj.word.toLowerCase();
-            scrambledWordEl.innerText = scrambleWord(currentSecretWord);
-            wordHintEl.innerText = randomObj.hint;
+            currentSecretWord = nextWord.word.toLowerCase();
+
+            scrambledWordEl.innerText =
+                scrambleWord(currentSecretWord);
+
+            wordHintEl.innerText = nextWord.hint;
+
+            userInputEl.focus();
         }
 
-        // CHECK ANSWER LOGIC
         function checkAnswer() {
-            const userGuess = userInputEl.value.trim().toLowerCase();
+            const userGuess =
+                userInputEl.value.trim().toLowerCase();
 
             if (!userGuess) {
                 return;
@@ -329,6 +550,7 @@
 
                 points += 10;
                 nectarPointsEl.innerText = points;
+
                 updateTierBadge();
 
                 userInputEl.disabled = true;
@@ -340,18 +562,17 @@
             }
         }
 
-        // EVENT LISTENERS
         checkBtn.addEventListener("click", checkAnswer);
         refreshBtn.addEventListener("click", initGame);
 
-        userInputEl.addEventListener("keypress", function (event) {
+        userInputEl.addEventListener("keypress", function(event) {
             if (event.key === "Enter" && !checkBtn.disabled) {
                 checkAnswer();
             }
         });
 
-        // START THE GAME
         initGame();
     </script>
+
 </body>
 </html>
